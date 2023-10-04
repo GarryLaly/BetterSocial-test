@@ -28,7 +28,7 @@ const FeedCard = ({
   onPress,
 }: FeedCardProps) => (
   <Pressable onPress={onPress}>
-    <View style={{height: 547}}>
+    <View>
       <View
         style={{
           height: 64,
@@ -54,9 +54,12 @@ const FeedCard = ({
       </View>
       <View style={{height: 0.5, backgroundColor: '#C4C4C4'}} />
       <View>
-        <Text style={{margin: 24}} numberOfLines={3} ellipsizeMode="tail">
-          {postContent}
-        </Text>
+        <View style={{margin: 24}}>
+          <Text numberOfLines={3} ellipsizeMode="tail">
+            {postContent}
+          </Text>
+          <Text style={{color: '#2980b9', fontWeight: 'bold'}}>More</Text>
+        </View>
         {postPhoto && (
           <Image
             source={{
