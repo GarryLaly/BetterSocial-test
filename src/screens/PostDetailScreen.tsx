@@ -9,19 +9,25 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import IconBack from '@assets/back.png';
-import IconBlock from '@assets/block.png';
-import IconComment from '@assets/comment.png';
-import IconDownvoteActive from '@assets/downvote_active.png';
-import IconDownvoteInactive from '@assets/downvote_inactive.png';
-import IconShare from '@assets/share.png';
-import IconUpvoteActive from '@assets/upvote_active.png';
-import IconUpvoteInactive from '@assets/upvote_inactive.png';
+import FeedCard, {FeedItem} from '@components/organisms/FeedCard';
+import {UserVotedFeedIdsItem} from '@store/reducers';
+import {feedUpDownVote} from '@store/actionCreators';
 
 function PostDetailScreen() {
   const navigation = useNavigation();
+  const route = useRoute();
+  const {id} = route?.params;
+  const feedList = useSelector(({feeds}) => feeds);
+  const userVotedFeedIdList = useSelector(
+    ({userVotedFeedIds}) => userVotedFeedIds,
+  );
+  const dispatch = useDispatch();
+  const detail = feedList.find((item: FeedItem) => item.id === id);
+
   return (
     <SafeAreaView>
       <ScrollView style={{marginBottom: 48}}>
@@ -59,93 +65,21 @@ function PostDetailScreen() {
             </View>
           </View>
           <View style={{height: 0.5, backgroundColor: '#C4C4C4'}} />
-          <View>
-            <Text style={{margin: 24}}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
-              luctus in ipsum ac dictum. Integer et nunc ut tellus tinci,
-              consectetur adipiscing elit. Nulla luctus in ipsum ac dictum.
-              Integer et nunc ut tellus tinci, consectetur adipiscing elit.
-              Nulla luctus in ipsum ac dictum. Integer et nunc ut tellus tinci
-              Nulla luctus in ipsum ac dictum. Integer et nunc ut tellus tinci,
-              consectetur adipiscing elit. Nulla luctus in ipsum ac dictum.
-            </Text>
-            <Image
-              source={{
-                uri: 'https://picsum.photos/200',
-              }}
-              height={200}
-            />
-          </View>
-          <View
-            style={{
-              height: 52,
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                flex: 1,
-              }}>
-              <Image
-                source={IconShare}
-                height={18}
-                width={18}
-                style={{marginLeft: 22}}
-              />
-              <Image
-                source={IconComment}
-                height={18}
-                width={18}
-                style={{marginLeft: 24}}
-              />
-              <Text
-                style={{
-                  width: 24,
-                  marginHorizontal: 4,
-                  textAlign: 'center',
-                }}>
-                0
-              </Text>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={IconBlock}
-                height={18}
-                width={18}
-                style={{marginLeft: 22}}
-              />
-              <Pressable onPress={() => console.log('downvote')}>
-                <Image
-                  source={IconDownvoteInactive}
-                  height={18}
-                  width={18}
-                  style={{marginLeft: 24}}
-                />
-              </Pressable>
-              <Text
-                style={{
-                  width: 24,
-                  marginHorizontal: 11,
-                  textAlign: 'center',
-                }}>
-                0
-              </Text>
-              <Pressable onPress={() => console.log('upvote')}>
-                <Image
-                  source={IconUpvoteInactive}
-                  height={18}
-                  width={18}
-                  style={{marginRight: 22}}
-                />
-              </Pressable>
-            </View>
-          </View>
+          <FeedCard
+            {...detail}
+            isVoteUp={userVotedFeedIdList.find(
+              (row: UserVotedFeedIdsItem) =>
+                row.postId === id && row.typeVote === 'up',
+            )}
+            isVoteDown={userVotedFeedIdList.find(
+              (row: UserVotedFeedIdsItem) =>
+                row.postId === id && row.typeVote === 'down',
+            )}
+            isDetail
+            onVote={(type: 'up' | 'down') => {
+              dispatch(feedUpDownVote(id, type));
+            }}
+          />
         </View>
         <View style={{height: 4, backgroundColor: '#C4C4C4'}} />
         <View

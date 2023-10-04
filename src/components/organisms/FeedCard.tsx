@@ -22,6 +22,7 @@ export type FeedItem = {
 export interface FeedCardProps extends FeedItem {
   isVoteUp: boolean;
   isVoteDown: boolean;
+  isDetail?: boolean;
   onPress: () => void;
   onVote: (type: 'up' | 'down') => void;
 }
@@ -36,42 +37,51 @@ const FeedCard = ({
   postVoteTotal,
   isVoteDown,
   isVoteUp,
+  isDetail,
   onPress,
   onVote,
 }: FeedCardProps) => (
-  <Pressable onPress={onPress}>
+  <Pressable onPress={!isDetail ? () => onPress() : null}>
     <View>
-      <View
-        style={{
-          height: 64,
-          alignItems: 'center',
-          flexDirection: 'row',
-        }}>
-        <Image
-          source={{
-            uri: authorPhoto,
-          }}
-          width={48}
-          height={48}
-          style={{borderRadius: 24, marginLeft: 24}}
-        />
-        <View style={{marginLeft: 16}}>
-          <Text style={{fontWeight: '600', fontSize: 14, lineHeight: 16.94}}>
-            {authorName}
-          </Text>
-          <Text style={{fontWeight: '400', fontSize: 12, lineHeight: 18}}>
-            {postDate}
-          </Text>
+      {!isDetail && (
+        <View
+          style={{
+            height: 64,
+            alignItems: 'center',
+            flexDirection: 'row',
+          }}>
+          <Image
+            source={{
+              uri: authorPhoto,
+            }}
+            width={48}
+            height={48}
+            style={{borderRadius: 24, marginLeft: 24}}
+          />
+          <View style={{marginLeft: 16}}>
+            <Text style={{fontWeight: '600', fontSize: 14, lineHeight: 16.94}}>
+              {authorName}
+            </Text>
+            <Text style={{fontWeight: '400', fontSize: 12, lineHeight: 18}}>
+              {postDate}
+            </Text>
+          </View>
         </View>
-      </View>
+      )}
       <View style={{height: 0.5, backgroundColor: '#C4C4C4'}} />
       <View>
-        <View style={{margin: 24}}>
-          <Text numberOfLines={3} ellipsizeMode="tail">
-            {postContent}
-          </Text>
-          <Text style={{color: '#2980b9', fontWeight: 'bold'}}>More</Text>
-        </View>
+        {isDetail ? (
+          <View style={{margin: 24}}>
+            <Text>{postContent}</Text>
+          </View>
+        ) : (
+          <View style={{margin: 24}}>
+            <Text numberOfLines={3} ellipsizeMode="tail">
+              {postContent}
+            </Text>
+            <Text style={{color: '#2980b9', fontWeight: 'bold'}}>More</Text>
+          </View>
+        )}
         {postPhoto && (
           <Image
             source={{
