@@ -19,9 +19,11 @@ export type FeedItem = {
 
 export interface FeedCardProps extends FeedItem {
   onPress: () => void;
+  onVote: (id: number, type: 'up' | 'down') => void;
 }
 
 const FeedCard = ({
+  id,
   authorPhoto,
   authorName,
   postDate,
@@ -30,6 +32,7 @@ const FeedCard = ({
   postCommentTotal,
   postVoteTotal,
   onPress,
+  onVote,
 }: FeedCardProps) => (
   <Pressable onPress={onPress}>
     <View>
@@ -117,7 +120,7 @@ const FeedCard = ({
             width={18}
             style={{marginLeft: 22}}
           />
-          <Pressable onPress={() => console.log('downvote')}>
+          <Pressable onPress={() => onVote(id, 'down')}>
             <Image
               source={IconDownvoteInactive}
               height={18}
@@ -133,7 +136,7 @@ const FeedCard = ({
             }}>
             {postVoteTotal}
           </Text>
-          <Pressable onPress={() => console.log('upvote')}>
+          <Pressable onPress={() => onVote(id, 'up')}>
             <Image
               source={IconUpvoteInactive}
               height={18}

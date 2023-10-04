@@ -1,4 +1,4 @@
-import {SET_FEED_LIST} from './actions';
+import {SET_FEED_LIST, FEED_DOWN_VOTE, FEED_UP_VOTE} from './actions';
 import {FeedItem} from '@components/organisms/FeedCard';
 
 // Contains authenticated user data
@@ -40,11 +40,31 @@ export const feeds = (
   ],
   action: any,
 ) => {
-  const {type, payload} = action;
+  const {type, payload, id} = action;
 
   switch (type) {
     case SET_FEED_LIST:
       return payload;
+
+    case FEED_UP_VOTE:
+      return state.map((item: FeedItem) => {
+        if (item.id === id) {
+          return {...item, postVoteTotal: item.postVoteTotal + 1};
+        }
+        return item;
+      });
+
+    case FEED_DOWN_VOTE:
+      return state.map((item: FeedItem) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            postVoteTotal:
+              item.postVoteTotal - 1 < 0 ? 0 : item.postVoteTotal - 1,
+          };
+        }
+        return item;
+      });
 
     default:
       return state;
