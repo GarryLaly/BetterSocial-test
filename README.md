@@ -72,6 +72,8 @@ return users
 
 ### Penggunaan function
 
+```
 current_user = "user1"
 suggested_users = suggest_users_to_follow(current_user)
 print("Suggested users to follow for", current_user, ":", suggested_users)
+```
