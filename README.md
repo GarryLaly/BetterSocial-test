@@ -66,7 +66,23 @@ suggested_users = []
 
 ```
 const rank_users = (users)
-# Implement a ranking algorithm (e.g., based on common interests, followers, engagement) # Return a list of users sorted by their rank
+ranked_users = []
+
+for user in users:
+   common_interests = len(set(user_profiles[user]) & set(user_profiles[current_user]))
+   follower_count = len(user_connections[user])
+
+   # Calculate a score based on common interests and followers
+   # You can adjust the weights for each factor as needed
+   score = (common_interests * 0.6) + (follower_count * 0.4)
+
+   ranked_users.append((user, score))
+
+# Sort users by their scores in descending order
+ranked_users.sort(key=lambda x: x[1], reverse=True)
+
+# Extract the sorted users from the list of tuples
+sorted_users = [user[0] for user in ranked_users]
 return users
 ```
 
