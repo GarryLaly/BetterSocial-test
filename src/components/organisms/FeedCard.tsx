@@ -2,9 +2,11 @@ import React from 'react';
 import {Image, Pressable, Text, View} from 'react-native';
 import IconBlock from '@assets/block.png';
 import IconComment from '@assets/comment.png';
+import IconDownvoteActive from '@assets/downvote_active.png';
+import IconUpvoteActive from '@assets/upvote_active.png';
 import IconDownvoteInactive from '@assets/downvote_inactive.png';
-import IconShare from '@assets/share.png';
 import IconUpvoteInactive from '@assets/upvote_inactive.png';
+import IconShare from '@assets/share.png';
 
 export type FeedItem = {
   id: number;
@@ -18,12 +20,13 @@ export type FeedItem = {
 };
 
 export interface FeedCardProps extends FeedItem {
+  isVoteUp: boolean;
+  isVoteDown: boolean;
   onPress: () => void;
-  onVote: (id: number, type: 'up' | 'down') => void;
+  onVote: (type: 'up' | 'down') => void;
 }
 
 const FeedCard = ({
-  id,
   authorPhoto,
   authorName,
   postDate,
@@ -31,6 +34,8 @@ const FeedCard = ({
   postPhoto,
   postCommentTotal,
   postVoteTotal,
+  isVoteDown,
+  isVoteUp,
   onPress,
   onVote,
 }: FeedCardProps) => (
@@ -120,9 +125,9 @@ const FeedCard = ({
             width={18}
             style={{marginLeft: 22}}
           />
-          <Pressable onPress={() => onVote(id, 'down')}>
+          <Pressable onPress={() => onVote('down')}>
             <Image
-              source={IconDownvoteInactive}
+              source={isVoteDown ? IconDownvoteActive : IconDownvoteInactive}
               height={18}
               width={18}
               style={{marginLeft: 24}}
@@ -136,9 +141,9 @@ const FeedCard = ({
             }}>
             {postVoteTotal}
           </Text>
-          <Pressable onPress={() => onVote(id, 'up')}>
+          <Pressable onPress={() => onVote('up')}>
             <Image
-              source={IconUpvoteInactive}
+              source={isVoteUp ? IconUpvoteActive : IconUpvoteInactive}
               height={18}
               width={18}
               style={{marginRight: 22}}
