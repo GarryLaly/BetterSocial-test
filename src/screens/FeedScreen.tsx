@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, ScrollView} from 'react-native';
+import {SafeAreaView, ScrollView, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
 
@@ -11,8 +11,8 @@ function FeedScreen() {
   const navigation = useNavigation();
 
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={{minHeight: 2, minWidth: 2, flex: 1}}>
         <FlashList
           data={feedList}
           renderItem={({item}: {item: FeedItem}) => (
@@ -23,7 +23,7 @@ function FeedScreen() {
           )}
           estimatedItemSize={200}
         />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }
