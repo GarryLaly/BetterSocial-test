@@ -1,26 +1,27 @@
 import React from 'react';
 import {SafeAreaView, ScrollView} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {FlashList} from '@shopify/flash-list';
 
-import FeedCard from '@components/organisms/FeedCard';
+import FeedCard, {FeedItem} from '@components/organisms/FeedCard';
+import {useSelector} from 'react-redux';
 
 function FeedScreen() {
+  const feedList = useSelector(({feeds}) => feeds);
   const navigation = useNavigation();
 
   return (
     <SafeAreaView>
       <ScrollView>
-        <FeedCard
-          authorPhoto={'https://picsum.photos/200'}
-          authorName={'Usup Suparma'}
-          postDate={'Mar 27, 2023'}
-          postContent={
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus in ipsum ac dictum. Integer et nunc ut tellus tinci, consectetur adipiscing elit. Nulla luctus in ipsum ac dictum. Integer et nunc ut tellus tinci, consectetur adipiscing elit. Nulla luctus in ipsum ac dictum. Integer et nunc ut tellus tinci Nulla luctus in ipsum ac dictum. Integer et nunc ut tellus tinci, consectetur adipiscing elit. Nulla luctus in ipsum ac dictum.'
-          }
-          postPhoto={'https://picsum.photos/200'}
-          postCommentTotal={0}
-          postVoteTotal={0}
-          onPress={() => navigation.navigate('post-detail')}
+        <FlashList
+          data={feedList}
+          renderItem={({item}: {item: FeedItem}) => (
+            <FeedCard
+              {...item}
+              onPress={() => navigation.navigate('post-detail')}
+            />
+          )}
+          estimatedItemSize={200}
         />
       </ScrollView>
     </SafeAreaView>

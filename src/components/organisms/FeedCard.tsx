@@ -6,7 +6,8 @@ import IconDownvoteInactive from '@assets/downvote_inactive.png';
 import IconShare from '@assets/share.png';
 import IconUpvoteInactive from '@assets/upvote_inactive.png';
 
-interface FeedCardProps {
+export type FeedItem = {
+  id: number;
   authorPhoto: string;
   authorName: string;
   postDate: string;
@@ -14,6 +15,9 @@ interface FeedCardProps {
   postPhoto?: string;
   postCommentTotal: number;
   postVoteTotal: number;
+};
+
+export interface FeedCardProps extends FeedItem {
   onPress: () => void;
 }
 
