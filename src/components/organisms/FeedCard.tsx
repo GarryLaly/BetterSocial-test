@@ -54,7 +54,9 @@ const FeedCard = ({
       </View>
       <View style={{height: 0.5, backgroundColor: '#C4C4C4'}} />
       <View>
-        <Text style={{margin: 24}}>{postContent}</Text>
+        <Text style={{margin: 24}} numberOfLines={3} ellipsizeMode="tail">
+          {postContent}
+        </Text>
         {postPhoto && (
           <Image
             source={{
